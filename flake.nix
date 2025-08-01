@@ -58,7 +58,11 @@
           });
         in
         {
-          nix-eval-jobs = patched;
+          nix-eval-jobs =
+            if builtins.compareVersions prev.nix-eval-jobs.version "2.30.0" >= 0 then
+              prev.nix-eval-jobs
+            else
+              patched;
         };
     in
     flake-utils.lib.eachSystem supportedSystems (
